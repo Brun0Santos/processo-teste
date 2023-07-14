@@ -47,7 +47,7 @@ public class TransferenciaTests {
         ParserDataException parserDataException = assertThrows(ParserDataException.class, () ->
                 service.getTransferenciaEntreDatas("2022-01-01 12:01:11", "2023-01-01 12:01:aa"));
         assertEquals("Erro ao fazer o parser da data", parserDataException.getMessage());
-        verify(repository, Mockito.times(0)).findByDataTransferenciaBetween(
+        verify(repository, Mockito.times(0)).findByTransferenciaEntreDatas(
                 LocalDate.of(2022, 5, 13), LocalDate.of(2023, 5, 13));
     }
 
