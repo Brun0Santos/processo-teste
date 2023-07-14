@@ -1,41 +1,41 @@
 package br.com.banco.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "conta")
 @Getter
-@NoArgsConstructor
-public class ContaEntity {
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@Table(name = "conta")
+public class ContaEntity implements Serializable {
+    private static final long serialVersionUID = 3889666812883596650L;
 
-    @Column(name = "id_conta")
     @Id
+    @NotNull
+    @Column(name = "id_conta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Integer idConta;
 
-    @Column(name = "nome_responsavel", nullable = false)
+    @Column(name = "nome_responsavel", nullable = false, length = 30)
     private String nomeResponsavel;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "conta_id")
+    @JsonIgnore
+    @OneToMany(mappedBy = "conta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TransferenciaEntity> transferencia;
 
-    public ContaEntity(String nomeResponsavel, List<TransferenciaEntity> transferencia) {
+    public ContaEntity(Integer idConta, String nomeResponsavel, List<TransferenciaEntity> transferencia) {
+        this.idConta = idConta;
         this.nomeResponsavel = nomeResponsavel;
         this.transferencia = transferencia;
     }
 
-    @Override
-    public String toString() {
-        return "ContaEntity{" +
-                "idConta=" + idConta +
-                ", nomeResponsavel='" + nomeResponsavel + '\'' +
-                ", transferencia=" + transferencia +
-                '}';
-    }
 }
