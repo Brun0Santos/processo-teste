@@ -62,3 +62,6 @@ A API poderá ser acessada em [localhost:5173](http://localhost:8080).
 O Swagger poderá ser visualizado em [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ![img.png](img.png)
+
+### Swagger
+![img_1.png](img_1.png)
