@@ -40,7 +40,8 @@ public class TransferenciaEntity implements Serializable {
     @JoinColumn(name = "conta_id", referencedColumnName = "id_conta")
     private ContaEntity conta;
 
-    public TransferenciaEntity(Integer id, LocalDate dataTransferencia, BigDecimal valor, Tipo tipo, String nomeOperadorTransacao, ContaEntity conta) {
+    public TransferenciaEntity(Integer id, LocalDate dataTransferencia, BigDecimal valor, Tipo tipo,
+                               String nomeOperadorTransacao, ContaEntity conta) {
         this.id = id;
         this.dataTransferencia = dataTransferencia;
         this.valor = valor;

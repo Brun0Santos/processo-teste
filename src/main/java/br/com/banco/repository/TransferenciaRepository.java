@@ -21,8 +21,20 @@ public interface TransferenciaRepository extends JpaRepository<TransferenciaEnti
     @Query("SELECT t FROM TransferenciaEntity t WHERE t.conta.id = :contaIdd")
     Optional<List<TransferenciaEntity>> findContaBancaria(@Param("contaIdd") Integer contaIdd);
 
-    @Query("SELECT t FROM TransferenciaEntity t WHERE t.dataTransferencia BETWEEN :dataInicio AND :dataFim AND t.nomeOperadorTransacao = :nomeOperador")
+    @Query(nativeQuery = true, value = "SELECT t.*, c.NOME_RESPONSAVEL "
+            + "FROM TRANSFERENCIA t "
+            + "INNER JOIN CONTA c "
+            + "ON t.CONTA_ID=c.ID_CONTA "
+            + "WHERE DATA_TRANSFERENCIA >= :dataInicio AND DATA_TRANSFERENCIA  <= :dataFim "
+            + "AND NOME_RESPONSAVEL = :operadorTransacionado")
     List<TransferenciaEntity> findPorTodosFiltros(@Param("dataInicio") LocalDate dataInicio,
                                                   @Param("dataFim") LocalDate dataFim,
-                                                  @Param("nomeOperador") String nomeOperador);
+                                                  @Param("operadorTransacionado") String operadorTransacionado);
+
+    @Query(nativeQuery = true, value = "SELECT t.*, c.NOME_RESPONSAVEL "
+            + "FROM TRANSFERENCIA t "
+            + "INNER JOIN CONTA c "
+            + "ON t.CONTA_ID=c.ID_CONTA "
+            + "WHERE NOME_RESPONSAVEL = :operadorTransacionado ")
+    List<TransferenciaEntity> operadorTransacionado(@Param("operadorTransacionado") String operadorTransacionado);
 }

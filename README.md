@@ -47,3 +47,18 @@
 - Utilizar o padrão RESTFul para a construção da sua API.
 - Existe um script sql no pacote resources que cotém a modelagem do banco que pode ser seguida, e valores iniciais.
 - Caso julge necessário você poderá criar mais tablas, porém a estrutura inicial não deve ser alterada.
+
+## Práticas adotadas
+
+- SOLID, DRY, YAGNI, KISS
+- API REST
+- Consultas com Spring Data JPA
+- Injeção de Dependências
+- Tratamento de respostas de erro
+- Geração automática do Swagger com a OpenAPI
+
+## Documentação da API
+A API poderá ser acessada em [localhost:5173](http://localhost:8080).
+O Swagger poderá ser visualizado em [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+![img.png](img.png)

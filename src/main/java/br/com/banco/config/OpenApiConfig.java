@@ -23,7 +23,7 @@ public class OpenApiConfig {
                         .contact(new Contact()
                                 .name("Bruno Santos")
                                 .url("https://github.com/Brun0Santos")
-                                .email("bruno_st17@hotmail.com\"")))
+                                .email("bruno_st17@hotmail.com")))
                 .externalDocs(new ExternalDocumentation()
                         .description("Github")
                         .url("https://github.com/Brun0Santos"));

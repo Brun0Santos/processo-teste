@@ -5,14 +5,12 @@ import br.com.banco.service.TransferenciaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/transferencia")
 public class TransferenciaController {
     @Autowired
@@ -34,7 +32,7 @@ public class TransferenciaController {
     }
 
     @GetMapping("/data/{dataInicio}/{dataFim}/{operador}")
-    @Operation(summary = "Dados de transferencias por datas", description = "Buscar todos os dados em um periodo de tempo")
+    @Operation(summary = "Dados de transferencias por datas", description = "Buscar todos os dados em um intervalo de tempo de um operador")
     public ResponseEntity<List<TransferenciaDto>> getAllFiltros(@PathVariable("dataInicio") String dataInicio,
                                                                 @PathVariable("dataFim") String dataFim,
                                                                 @PathVariable("operador") String operador) {

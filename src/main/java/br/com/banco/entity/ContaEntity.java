@@ -37,5 +37,4 @@ public class ContaEntity implements Serializable {
         this.nomeResponsavel = nomeResponsavel;
         this.transferencia = transferencia;
     }
-
 }

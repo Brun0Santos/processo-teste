@@ -37,7 +37,7 @@ public class TransferenciaService {
 
     public List<TransferenciaDto> getDadosFromNomeOperador(String nameOperador) {
         Optional<List<TransferenciaEntity>> dadosOperadorTransacao = Optional.of(
-                repository.findNomeOperadorTransacao(nameOperador));
+                repository.operadorTransacionado(nameOperador));
         if (dadosOperadorTransacao.get().isEmpty()) {
             throw new OperadorNotFoundException("Operador Nao Encontrado");
         }
@@ -51,7 +51,7 @@ public class TransferenciaService {
             LocalDate inicio = dataParser(dataInicio);
             LocalDate fim = dataParser(dataFim);
             var transferencias = repository.findByTransferenciaEntreDatas(inicio, fim);
-            return parserListaDto(transferencias);
+            return parserTransferenciaDto(transferencias);
         } catch (DateTimeParseException ex) {
             log.error(ex.getMessage());
             throw new ParserDataException();
@@ -62,39 +62,26 @@ public class TransferenciaService {
         try {
             LocalDate inicio = dataParser(dataInicio);
             LocalDate fim = dataParser(dataFim);
-            var byTempoEOperador = repository.findPorTodosFiltros(inicio, fim, operador);
-            return parserListaDto(byTempoEOperador);
-        } catch (DateTimeParseException ex) {
+            var dados = repository.findPorTodosFiltros(inicio, fim, operador);
+            return parserTransferenciaDto(dados);
+        } catch (ParserDataException ex) {
             log.error(ex.getMessage());
             throw new ParserDataException();
         }
     }
 
     public LocalDate dataParser(String data) {
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDate.parse(data, pattern);
-
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (data != null) {
+            return LocalDate.parse(data, pattern);
+        }
+        throw new ParserDataException();
     }
 
-    public List<TransferenciaDto> parserListaDto(List<TransferenciaEntity> transferencias) {
+    public List<TransferenciaDto> parserTransferenciaDto(List<TransferenciaEntity> transferencias) {
+        if (transferencias.isEmpty()) throw new OperadorNotFoundException("Dados entre as datas nao encontrado");
         return transferencias.stream().map(
-                        transferenciasPorTempo -> mapper.map(transferenciasPorTempo, TransferenciaDto.class))
+                        t -> mapper.map(t, TransferenciaDto.class))
                 .collect(Collectors.toList());
     }
-
-    //    public List<TransferenciaDto> getTransferenciaEntreDatas(String dataInicio, String dataFim) throws ParserDataException {
-//        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        try {
-//            LocalDate inicio = LocalDate.parse(dataInicio, pattern);
-//            LocalDate fim = LocalDate.parse(dataFim, pattern);
-//            List<TransferenciaEntity> byDataTransferenciaBetween = repository.findByTransferenciaEntreDatas(inicio, fim);
-//            return byDataTransferenciaBetween.stream().map(
-//                            transferenciasPorTempo -> mapper.map(transferenciasPorTempo, TransferenciaDto.class))
-//                    .collect(Collectors.toList());
-//        } catch (DateTimeParseException ex) {
-//            log.error(ex.getMessage());
-//            throw new ParserDataException();
-//        }
-//    }
-
 }

@@ -43,20 +43,28 @@ public class TransferenciaTests {
     }
 
     @Test
-    public void deveraLancarExceptionPorFormatoDeDataErradaTest() {
+    public void deveraLancarExceptionPorFormatoDeDataIncorretaTest() {
         ParserDataException parserDataException = assertThrows(ParserDataException.class, () ->
-                service.getTransferenciaEntreDatas("2022-01-01 12:01:11", "2023-01-01 12:01:aa"));
+                service.getTransferenciaEntreDatas("2022-01-01a", "2023-01-01"));
         assertEquals("Erro ao fazer o parser da data", parserDataException.getMessage());
         verify(repository, Mockito.times(0)).findByTransferenciaEntreDatas(
                 LocalDate.of(2022, 5, 13), LocalDate.of(2023, 5, 13));
     }
 
     @Test
+    public void deveraTratarNullPointerExceptionTest() {
+        ParserDataException parserDataException = assertThrows(ParserDataException.class, () ->
+                service.getTransferenciaEntreDatas(null, null));
+        assertEquals("Erro ao fazer o parser da data", parserDataException.getMessage());
+        verify(repository, Mockito.times(0)).findByTransferenciaEntreDatas(null, null);
+    }
+
+    @Test
     public void deveraLancarExceptionPorOperadorNaoEncontradoTest() {
-        when(repository.findNomeOperadorTransacao("Lucas")).thenReturn(Collections.emptyList());
+        when(repository.operadorTransacionado("Lucas")).thenReturn(Collections.emptyList());
         OperadorNotFoundException operadorNotFoundException = assertThrows(OperadorNotFoundException.class, () ->
                 service.getDadosFromNomeOperador("Lucas"));
-        verify(repository, Mockito.times(1)).findNomeOperadorTransacao("Lucas");
+        verify(repository, Mockito.times(1)).operadorTransacionado("Lucas");
         assertEquals("Operador Nao Encontrado", operadorNotFoundException.getMessage());
     }
 }
